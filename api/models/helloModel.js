@@ -1,10 +1,7 @@
 class HelloModel {
-
-    getMessage() {
-      return "Hello World!";
-    }
-    
+  getMessage () {
+    return 'Hello World!'
+  }
 }
-  
-module.exports = HelloModel;
-  
+
+module.exports = HelloModel

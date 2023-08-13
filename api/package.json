@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha './tests/**/*.test.js' --exit"
+    "test": "mocha './tests/**/*.test.js' --exit",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "Your Name",
@@ -19,10 +20,19 @@
   },
   "devDependencies": {
     "chai": "^4.3.4",
+    "eslint": "^8.47.0",
+    "eslint-plugin-mocha": "^10.1.0",
+    "husky": "^8.0.3",
     "mocha": "^10.0.0",
     "supertest": "^6.2.0"
   },
   "files": [
     "app.js"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint"
+    }
+  }
+  
 }

@@ -1,9 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const HelloController = require('../controllers/helloController');
+const express = require('express')
+const router = express.Router()
+const HelloController = require('../controllers/helloController')
 
-const helloController = new HelloController();
+const helloController = new HelloController()
 
-router.get('/', helloController.getHello.bind(helloController));
+router.get('/', helloController.getHello.bind(helloController))
 
-module.exports = router;
+module.exports = router

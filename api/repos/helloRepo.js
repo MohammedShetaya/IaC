@@ -1,14 +1,13 @@
-const HelloModel = require('../models/helloModel');
+const HelloModel = require('../models/helloModel')
 
 class HelloRepo {
-
-  constructor() {
-    this.helloModel = new HelloModel();
+  constructor () {
+    this.helloModel = new HelloModel()
   }
 
-  getHelloMessage() {
-    return this.helloModel.getMessage();
+  getHelloMessage () {
+    return this.helloModel.getMessage()
   }
 }
 
-module.exports = HelloRepo;
+module.exports = HelloRepo

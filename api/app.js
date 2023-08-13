@@ -1,12 +1,12 @@
-const express = require('express');
-const helloRoutes = require('./routes/helloRoutes');
-const app = express();
-const PORT = 3000;
+const express = require('express')
+const helloRoutes = require('./routes/helloRoutes')
+const app = express()
+const PORT = 3000
 
-app.use('/hello', helloRoutes);
+app.use('/hello', helloRoutes)
 
 app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
-});
+  console.log(`Server is running at http://localhost:${PORT}`)
+})
 
-module.exports = app;
+module.exports = app
