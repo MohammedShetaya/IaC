@@ -9,6 +9,9 @@ class HelloService {
     return this.helloRepo.getHelloMessage()
   }
 
+  getTwoHelloMessages () {
+    return this.helloRepo.getHelloMessage() + ' ' + this.helloRepo.getHelloMessage()
+  }
 }
 
 module.exports = HelloService
