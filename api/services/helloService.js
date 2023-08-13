@@ -12,6 +12,10 @@ class HelloService {
   getTwoHelloMessages () {
     return this.helloRepo.getHelloMessage() + ' ' + this.helloRepo.getHelloMessage()
   }
+
+  getThreeHelloMessages () {
+    return this.helloRepo.getHelloMessage() + ' ' + this.helloRepo.getHelloMessage() + ' ' + this.helloRepo.getHelloMessage()
+  }
 }
 
 module.exports = HelloService
