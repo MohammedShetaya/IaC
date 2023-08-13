@@ -54,4 +54,4 @@ jobs:
         run: npm install
 
       - name: Run Linter 
-        run: npx standard -v
+        run: npn run lint
