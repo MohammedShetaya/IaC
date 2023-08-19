@@ -27,7 +27,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const pr = await github.rest.pulls.get({
+
+            const response = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: ${{ github.event.payload.number }}
