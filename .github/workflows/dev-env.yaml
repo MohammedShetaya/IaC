@@ -33,8 +33,8 @@ jobs:
             const response = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: ${ process.env.PULL_NUMBER }
             });
+            console.log(response);
             return pr.data.mergeable_state;
       
       - name: Check Mergable State
