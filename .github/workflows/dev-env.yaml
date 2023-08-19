@@ -35,7 +35,7 @@ jobs:
             return response.data.mergeable_state;
       
       - name: Check Mergable State
-        if: steps.check-mergeability.outputs.return == 'true'
+        if: steps.check-mergeability.outputs.return != 'true'
         run: |
           echo "The branch is Mergable" ;
         
