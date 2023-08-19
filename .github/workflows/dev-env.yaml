@@ -24,18 +24,13 @@ jobs:
       - name: Check Mergeability against the main branch
         id: check-mergeability
         uses: actions/github-script@v5
-        env:
-          PULL_NUMBER: ${{ github.event.payload.number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            console.log('here');
-            console.log( ${{ github.event.pull_request.number }} );
-
             const response = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: process.env.PULL_NUMBER
+              pull_number: ${{ github.event.pull_request.number }}
             });
             return pr.data.mergeable_state;
       
