@@ -32,6 +32,7 @@ jobs:
               repo: context.repo.repo,
               pull_number: ${{ github.event.pull_request.number }}
             });
+            console.log(response);
             return response.data.mergeable_state;
       
       - name: Check Mergable State
