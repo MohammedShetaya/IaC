@@ -36,4 +36,8 @@ jobs:
       
       - name: Check Mergable State
         if: steps.check-mergeability.outputs.return == 'true'
+        runs: |
+        echo "The branch is Mergable"
+        
+        
       
