@@ -30,7 +30,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             console.log('here');
-            console.log( ${{ github.event }} );
+            console.log( ${{ github.event.pull_request.number }} );
 
             const response = await github.rest.pulls.get({
               owner: context.repo.owner,
