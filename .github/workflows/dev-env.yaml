@@ -1,0 +1,39 @@
+name: Creating a Development Environment to test Every PR
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'api/**'
+    types:
+      - opened
+
+jobs:
+
+  create-dev-env:
+    name: "Create a Development Environment"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+    
+    steps:
+
+      - name: Check Mergeability against the main branch
+        id: check-mergeability
+        uses: actions/github-script@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = await github.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ github.event.payload.number }}
+            });
+            return pr.data.mergeable_state;
+      
+      - name: Check Mergable State
+        if: steps.check-mergeability.outputs.return == 'true'
+      
