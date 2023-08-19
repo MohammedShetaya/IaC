@@ -25,16 +25,16 @@ jobs:
         id: check-mergeability
         uses: actions/github-script@v5
         env:
-          OWNER: ${{ context.repo.owner }}
-          REPO: ${{ context.repo.repo }}
+          OWNER: ${{  }}
+          REPO: ${{  }}
           PULL_NUMBER: ${{ github.event.payload.number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
 
             const response = await github.rest.pulls.get({
-              owner: ${ process.env.OWNER },
-              repo: ${ process.env.REPO },
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               pull_number: ${ process.env.PULL_NUMBER }
             });
             return pr.data.mergeable_state;
