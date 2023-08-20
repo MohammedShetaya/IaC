@@ -22,6 +22,8 @@ jobs:
         shell: bash
     
     runs-on: ubuntu-latest
+    env: 
+      event: ${{ github.event }}
     
     steps:
     
@@ -30,8 +32,6 @@ jobs:
       id: get_pr_number
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        env: 
-          event: ${{ github.event }}
         result-encoding: string
         script: |
           let pr_number;
