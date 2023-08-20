@@ -29,18 +29,17 @@ jobs:
 
       - name: Get the PR Number
         id: get-pr-number
-        uses: actions/github-script@v3
+        uses: actions/github-script@v5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           script: |
 
             let pr_number;
-            console.log(github.event.pull_request);
-            console.log(github.event.inputs);
-            if (github.event.pull_request)
-              pr_number = github.event.pull_request.number;
+            
+            if (${{ github.event.pull_request }})
+              pr_number = ${{ github.event.pull_request.number }};
             else
-              pr_number = github.event.inputs.pr_number_input;
+              pr_number = ${{ github.event.inputs.pr_number_input }};
 
             const pr = await github.pulls.get({
               owner: context.repo.owner,
