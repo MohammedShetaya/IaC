@@ -32,8 +32,9 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         result-encoding: string
         script: |
-          console.log(${{ github.event_name == 'workflow_dispatch' }});
-          
+          if ( ${{ github.event_name == 'pull_request' }} )
+            return ${{ github.ref }};
+            
           const response = await github.rest.pulls.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
