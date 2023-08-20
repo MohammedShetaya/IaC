@@ -13,23 +13,24 @@ on:
         description: 'Pull Request Number'
         required: true
 
+      
 jobs:
-
-  create-dev-env:
-    name: "Create a Development Environment"
-    runs-on: ubuntu-latest
-
+  create:
+    name: 'Create a Development Env'
     defaults:
       run:
         shell: bash
     
+    runs-on: ubuntu-latest
+    
     steps:
-
-    - name: Get the PR Number
-      id: get-pr-number
+    
+    - name: Get Pull Request Number
       uses: actions/github-script@v5
+      id: get_pr_number
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        result-encoding: string
         script: |
           let pr_number;
 
@@ -60,6 +61,3 @@ jobs:
 
           console.log("PR Ref is:" + pr.data.head.ref);
           return pr.data.head.ref;
-    
-      
-    
