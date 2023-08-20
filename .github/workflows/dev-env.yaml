@@ -39,4 +39,4 @@ jobs:
             pull_number: ${{ github.event.inputs.pr_number_input }}
           });
 
-          return pr.data.head.ref;
+          return response.data.head.ref;
