@@ -34,19 +34,14 @@ jobs:
         script: |
 
           let pr_number;
-          console.log(${{ github.event.inputs.pr_number_input }}) ;
 
-          if ( ${{ github.event_name }} == "pull_request" ){
-            //pr_number = ${{ github.event.pull_request.number }}
-          }
-          else {
-            //pr_number = ${{ github.event.inputs.pr_number_input }}
-          }
 
           const response = await github.rest.pulls.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
             pull_number: ${{ github.event.inputs.pr_number_input }}
           });
+
+          console.log(response);
 
           return response.data.head.ref;
