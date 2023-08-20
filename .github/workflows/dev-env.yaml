@@ -34,9 +34,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           script: |
 
-            var pr_number;
+            let pr_number;
+            console.log(github.event.pull_request);
+            console.log(github.event.inputs);
             if (github.event.pull_request)
-              pr_number = github.event.pull_request;
+              pr_number = github.event.pull_request.number;
             else
               pr_number = github.event.inputs.pr_number_input;
 
