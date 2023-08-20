@@ -34,7 +34,7 @@ jobs:
         script: |
 
           let pr_number;
-          console.log(${{ github.event.pull_request.number }}) ;
+          console.log(${{ github.event.inputs.pr_number_input }}) ;
 
           if ( ${{ github.event_name }} == "pull_request" ){
             //pr_number = ${{ github.event.pull_request.number }}
