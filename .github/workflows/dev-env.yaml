@@ -22,8 +22,6 @@ jobs:
         shell: bash
     
     runs-on: ubuntu-latest
-    env: 
-      event: ${{ github.event }}
     
     steps:
     
@@ -35,10 +33,10 @@ jobs:
         result-encoding: string
         script: |
           
-          const pr = await github.rest.pulls.get({
+          const response = await github.rest.pulls.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            pull_number: 26
+            pull_number: ${{ github.event.inputs.pr_number_input }}
           });
 
           return pr.data.head.ref;
