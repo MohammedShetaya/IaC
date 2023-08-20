@@ -29,7 +29,7 @@ jobs:
         id: get-pr-number
         uses: actions/github-script@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
 
             let pr_number;
