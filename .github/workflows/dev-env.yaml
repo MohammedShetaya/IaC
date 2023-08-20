@@ -33,15 +33,19 @@ jobs:
         result-encoding: string
         script: |
 
-          let pr_number;
+          if (${{ github.event_name } == 'workflow_dispatch') {
+            
+            const response = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ github.event.inputs.pr_number_input }}
+            });
 
+            if (response.data.number !== ${{ github.event.inputs.pr_number_input }}) {
+              throw new Error ("PR number does not exist");
+            }
+            console.log("PR Ref is:" + response.data.head.ref);
+            return response.data.head.ref;
+          }
 
-          const response = await github.rest.pulls.get({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: ${{ github.event.inputs.pr_number_input }}
-          });
-
-          console.log(response);
-
-          return response.data.head.ref;
+          return ${{ github.ref }}
