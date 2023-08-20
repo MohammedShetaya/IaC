@@ -5,7 +5,7 @@ const expect = chai.expect;
 
 chai.use(chaiHttp);
 
-// this tests /hello api that returns a hello message 
+// this tests /hello api that returns a hello message and 200
 describe('Hello API', () => {
     it('should return "Hello World!"', (done) => {
         chai
