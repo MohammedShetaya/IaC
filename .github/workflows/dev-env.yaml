@@ -33,14 +33,11 @@ jobs:
         result-encoding: string
         script: |
 
-          let event = ${{ github.event }}
-
           let pr_number;
-          console.log(event.inputs)
-          if (event.pull_request)
-            pr_number = event.pull_request.number
+          if ( ${{ github.event_name }} == "pull_request" )
+            pr_number = ${{ github.event.pull_request.number }}
           else
-            pr_number = event.inputs.pr_number_input
+            pr_number = ${{ github.event.inputs.pr_number_input }}
           
           const response = await github.rest.pulls.get({
             owner: context.repo.owner,
