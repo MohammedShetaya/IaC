@@ -34,10 +34,12 @@ jobs:
         script: |
 
           let pr_number;
-          if ( ${{ github.event_name }} == "pull_request" )
+          if ( ${{ github.event_name }} == "pull_request" ){
             pr_number = ${{ github.event.pull_request.number }}
-          else
+          }
+          else {
             pr_number = ${{ github.event.inputs.pr_number_input }}
+          }
           
           const response = await github.rest.pulls.get({
             owner: context.repo.owner,
