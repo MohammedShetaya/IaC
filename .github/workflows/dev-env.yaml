@@ -32,7 +32,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         result-encoding: string
         script: |
-          console.log(${{ github.event_name }});
+          console.log(${{ github }});
           
           const response = await github.rest.pulls.get({
             owner: context.repo.owner,
