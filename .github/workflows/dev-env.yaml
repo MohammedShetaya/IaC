@@ -33,7 +33,7 @@ jobs:
           script: |
 
             let pr_number = 6;
-
-      
+            console.log(${{ github.event.pull_request }});
+                  
         
       
