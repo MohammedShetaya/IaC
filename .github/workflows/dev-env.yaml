@@ -43,21 +43,3 @@ jobs:
           }
 
           console.log(2);
-
-
-          const pr = await github.rest.pulls.get({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: pr_number
-          });
-          console.log(3);
-
-
-          if( ${{ github.event.inputs }} ){
-            if(pr.data.number !== pr_number)
-              throw new Error ("PR does not exist");
-          }
-          console.log(4);
-
-          console.log("PR Ref is:" + pr.data.head.ref);
-          return pr.data.head.ref;
