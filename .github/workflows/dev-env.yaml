@@ -36,7 +36,7 @@ jobs:
           let event = ${{ github.event }}
 
           let pr_number;
-
+          console.log(event.inputs)
           if (event.pull_request)
             pr_number = event.pull_request.number
           else
