@@ -34,7 +34,7 @@ jobs:
             let pr_number;
 
             console.log(1);
-            if ( ${{ github.event.inputs }} ) {
+            if ( 26 ) {
               pr_number = ${{ github.event.inputs.pr_number_input }} ;
             }
             else {
