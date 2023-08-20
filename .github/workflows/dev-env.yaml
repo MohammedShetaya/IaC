@@ -34,6 +34,6 @@ jobs:
 
             let pr_number = 6;
             console.log(${{ github.event.pull_request }});
-                  
-        
-      
+            if (${{ github.event.pull_request }} == '')
+              console.log("hamada");
+            
