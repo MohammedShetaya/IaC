@@ -52,7 +52,7 @@ jobs:
             console.log(3);
 
 
-            if( ${{ github.event.inputs }} ){
+            if( 26 ){
               if(pr.data.number !== pr_number)
                 throw new Error ("PR does not exist");
             }
