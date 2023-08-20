@@ -26,7 +26,7 @@ jobs:
     steps:
     
     - name: Get Pull Request Number 
-      uses: actions/github-script@v5
+      uses: actions/github-script@v3
       id: get_pr_number
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -40,7 +40,7 @@ jobs:
           else {
             pr_number = ${{ github.event.inputs.pr_number_input }}
           }
-          
+
           const response = await github.rest.pulls.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
