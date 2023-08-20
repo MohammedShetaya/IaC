@@ -33,8 +33,8 @@ jobs:
         result-encoding: string
         script: |
           if ( ${{ github.event_name == 'pull_request' }} )
-            return ${{ github.ref }};
-            
+            return ${{ github.head_ref }};
+
           const response = await github.rest.pulls.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
