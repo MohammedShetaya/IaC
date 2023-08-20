@@ -33,7 +33,7 @@ jobs:
         result-encoding: string
         script: |
 
-          if (${{ github.event_name } == 'workflow_dispatch') {
+          if (${{ github.event_name }} == 'workflow_dispatch') {
             
             const response = await github.rest.pulls.get({
               owner: context.repo.owner,
@@ -46,6 +46,7 @@ jobs:
             }
             console.log("PR Ref is:" + response.data.head.ref);
             return response.data.head.ref;
+
           }
 
           return ${{ github.ref }}
