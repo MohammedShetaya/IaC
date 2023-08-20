@@ -36,7 +36,7 @@ jobs:
 
             let pr_number;
 
-            if (${{ github.event.pull_request }})
+            if ( ${{ github.event.pull_request }} != undefined )
               pr_number = ${{ github.event.pull_request.number }};
             else
               pr_number = ${{ github.event.inputs.pr_number_input }};
@@ -48,7 +48,7 @@ jobs:
             });
 
             console.log(pr);
-            
+
             if(! ${{ github.event.pull_request }} ){
               if(pr.data.number != pr_number)
                 throw new Error ("PR does not exist");
