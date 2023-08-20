@@ -32,7 +32,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         result-encoding: string
         script: |
-          console.log(${{ github }});
+          console.log(${{ github.even_name == 'workflow_dispatch' }});
           
           const response = await github.rest.pulls.get({
             owner: context.repo.owner,
