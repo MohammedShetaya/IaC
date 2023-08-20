@@ -33,7 +33,7 @@ jobs:
         result-encoding: string
         script: |
 
-          let pr_number = ${{ github.event.inputs.pr_number_input }}
+          let event = ${{ github.event }}
           
           const response = await github.rest.pulls.get({
             owner: context.repo.owner,
