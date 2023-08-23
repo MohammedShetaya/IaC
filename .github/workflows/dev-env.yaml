@@ -1,4 +1,4 @@
-name: Creating a Development Environment to test Every PR
+name: Creating a Dev Environment per PR
 
 on:
   pull_request:
@@ -6,12 +6,6 @@ on:
       - main
     paths:
       - 'api/**'
-  
-  workflow_dispatch:
-    inputs:
-      pr_number_input: 
-        description: 'Pull Request Number'
-        required: true
 
       
 jobs:
@@ -24,26 +18,51 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    
-    - name: Get Pull Request Ref 
-      uses: actions/github-script@v5
-      id: get_pr_ref
+
+
+    # checkout to the branch that contains the infra files
+    - name: Checkout the Repo to the infra branch
+      uses: actions/checkout@v2
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        result-encoding: string
-        script: |
-          if ( ${{ github.event_name == 'pull_request' }} )
-            return ${{ github.ref }};
-            
-          const response = await github.rest.pulls.get({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: ${{ github.event.inputs.pr_number_input }}
-          });
-          
-          if (response.data.number !== ${{ github.event.inputs.pr_number_input }}) {
-            throw new Error('Pull request is not open or number is not valid!');
-          }
-          console.log("PR ref: " + response.data.head.ref);
-          return response.data.head.ref;
+        ref: infra
+      
+    
+    # settup terraform on the runner machine
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with: 
+        terraform_version: 1.5.5
+        cli_config_credentials_token: ${{ secrets.TERRAFORM_API_TOKEN }}
+    
+    # create a new file from the image saved in infra/development/development_instance.tf.example
+    # return the newly created instance file name and the output expected from terraform
+    - name: Create Dev Instance Resource File
+      id: create_resource_file
+      run: |
+        OUTPUT="$(./create_instance_resource.sh PR_${{ github.event.pull_request.number }} | jq -r .terraform_expected_output)"
+        echo "::set-output name=TERRAFORM_OUPUT::$OUTPUT"
+    
+    - name: Terraform Init and Validate
+      id: terraform-init
+      working-directory: infra/development/
+      run: |
+        terraform init
+        terraform validate -no-color
+    
+    - name: Terraform Plan
+      id: terraform-plan
+      run: terraform plan -no-color
+      working-directory: infra/development/
+
+    - name: dummy step
+      run: |
+        echo "${{steps.terraform-plan.outcome}}"    
+
+
+
+
+
+
+
+
 

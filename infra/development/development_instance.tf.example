@@ -1,5 +1,7 @@
+
 # this is an image of an ec2 instance that will be created on every PR created against the main branch
-resource "aws_instance" "development_instance" {
+# to destroy this instance the files created will be deleted and then use terraform apply 
+resource "aws_instance" "development_instance_RANDOMID" {
   ami                         = data.aws_ami.server_ami.id
   instance_type               = "t2.micro"
   key_name                    = aws_key_pair.instance_key_pair.key_name
@@ -8,6 +10,10 @@ resource "aws_instance" "development_instance" {
   associate_public_ip_address = true
 
   tags = {
-    Name = "dev-instance"
+    Name = "dev-instance-RANDOMID"
   }
+}
+
+output "development_dns_RANDOMID" {
+  value = aws_instance.development_instance_RANDOMID.public_dns
 }
