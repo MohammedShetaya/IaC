@@ -40,10 +40,8 @@ jobs:
       id: create_resource_file
       working-directory: infra/development/
       run: |
-        ls
-        OUTPUT="$(./create_instance_resource.sh PR_${{ github.event.pull_request.number }} | jq -r .terraform_expected_output)"
-        echo "::set-output name=TERRAFORM_OUPUT::$OUTPUT"
-    
+        ls -al
+        
     - name: Terraform Init and Validate
       id: terraform-init
       working-directory: infra/development/
