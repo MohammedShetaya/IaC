@@ -38,6 +38,7 @@ jobs:
     # return the newly created instance file name and the output expected from terraform
     - name: Create Dev Instance Resource File
       id: create_resource_file
+      working-directory: infra/development/
       run: |
         OUTPUT="$(./create_instance_resource.sh PR_${{ github.event.pull_request.number }} | jq -r .terraform_expected_output)"
         echo "::set-output name=TERRAFORM_OUPUT::$OUTPUT"
