@@ -37,13 +37,13 @@ _exit_1() {
 _create_instance_file() {
 
     # the local dir of this script
-    local -r script_dir = "$(_get_file_dir)"
+    local -r script_dir="$(_get_file_dir)"
 
     # create a Unix time stamp as a random id for this instance
-    local -r random_id = "$(date +%s)"
+    local -r random_id="$(date +%s)"
 
     # use the first argument to the script as the resource_id or random_id as default value
-    local -r resource_id = "${1:-$random_id}"
+    local -r resource_id="${1:-$random_id}"
 
     if [[ -z "${resource_id}" ]]; then 
         _exit_1 "ERROR: could not generate a random id or did not find an input id"
