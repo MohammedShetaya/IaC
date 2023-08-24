@@ -56,7 +56,7 @@ _create_instance_file() {
           "${script_dir}/development_instance_${resource_id}.tf"
 
         # replace all RANDOMID occurences in the created file with resource_id
-        sed -i "s/RANDOMID/${resource_id}/g" "${script_dir}/extra_staging_${resource_id}.tf"
+        sed -i "s/RANDOMID/${resource_id}/g" "${script_dir}/development_instance_${resource_id}.tf"
 
     fi
 
