@@ -42,6 +42,7 @@ jobs:
       run: |
         chmod +x create_instance_resource.sh
         OUTPUT="$(./create_instance_resource.sh PR_${{ github.event.pull_request.number }} | jq -r .resource_id)"
+        ls -l
         echo "RESOURCE_ID=$OUTPUT" >> $GITHUB_OUTPUT
     
     - name: Terraform Init and Validate
@@ -67,8 +68,6 @@ jobs:
       working-directory: infra/development/
       run: |
         terraform output development_dns_${{ steps.create-resource-file.outputs.RESOURCE_ID }}
-
-
 
 
 
