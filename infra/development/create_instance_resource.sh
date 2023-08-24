@@ -49,7 +49,7 @@ _create_instance_file() {
         _exit_1 "ERROR: could not generate a random id or did not find an input id"
     fi
 
-    if [[ -f "${script_dir}/development_instance_${resource_id}.tf" ]]; then 
+    if [[ ! -f "${script_dir}/development_instance_${resource_id}.tf" ]]; then 
         # copy the image file to a new tf file 
         cp \
           "${script_dir}/development_instance.tf.example" \
