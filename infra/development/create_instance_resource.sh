@@ -62,7 +62,7 @@ _create_instance_file() {
 
     # print a json formated output with terraform_expected_output as the name of the output 
     # that terraform should return after running terraform apply
-    echo '{"resource_file" : "development_instance_'${resource_id}'.tf", "terraform_expected_output" : "development_dns_'${resource_id}'"}'
+    echo '{"resource_file" : "development_instance_'${resource_id}'.tf", "resource_id" : "'${resource_id}'"}'
     exit 0
 }
 

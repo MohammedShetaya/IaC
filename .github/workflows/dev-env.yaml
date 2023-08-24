@@ -37,12 +37,12 @@ jobs:
     # create a new file from the image saved in infra/development/development_instance.tf.example
     # return the newly created instance file name and the output expected from terraform
     - name: Create Dev Instance Resource File
-      id: create_resource_file
+      id: create-resource-file
       working-directory: infra/development/
       run: |
         chmod +x create_instance_resource.sh
-        OUTPUT="$(./create_instance_resource.sh PR_${{ github.event.pull_request.number }} | jq -r .terraform_expected_output)"
-        echo "::set-output name=TERRAFORM_OUPUT::$OUTPUT"
+        OUTPUT="$(./create_instance_resource.sh PR_${{ github.event.pull_request.number }} | jq -r .resource_id)"
+        echo "RESOURCE_ID=$OUTPUT" >> $GITHUB_OUTPUT
     
     - name: Terraform Init and Validate
       id: terraform-init
@@ -56,9 +56,18 @@ jobs:
       run: terraform plan -no-color
       working-directory: infra/development/
 
-    - name: dummy step
+    - name: Terraform Apply
+      id: terraform-apply
+      working-directory: infra/development/
       run: |
-        echo "${{steps.terraform-plan.outcome}}"    
+        terraform apply -auto-approve
+
+    - name: Extract Terraform Output
+      id: terraform-output
+      working-directory: infra/development/
+      run: |
+        terraform output development_dns_${{ steps.create-resource-file.outputs.RESOURCE_ID }}
+
 
 
 
