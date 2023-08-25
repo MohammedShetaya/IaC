@@ -82,6 +82,7 @@ jobs:
       with:
         hosts: '${{ secrets.INSTANCE_USER }}@${{ steps.terraform-output.outputs.stdout }}'
         privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
+        debug: true
         command: |
           ls /var
 
