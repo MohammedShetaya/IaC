@@ -76,12 +76,15 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
     
-
-    # deploy web app to the new instance
-    - name: Deploy to New Instance
-      id: deploy
-      run: |
-        rsync -avz -e "ssh -i -o IdentityFile= ${{ secrets.INSTANCE_PRIVATE_KEY }}" /api/ ${{ secrets.INSTANCE_USER }}@${{ steps.terraform-output.outputs.stdout }}:/var/app/
+    - name: 'Deploy to New Instance'
+      uses: burnett01/rsync-deployments@23a557dceb19f9bb960ef40cf75cab5e9b37ec1f
+      with:
+        switches: -avzr --delete
+        path: ./api
+        remote_path: /var/app
+        remote_host: ${{ steps.terraform-output.outputs.stdout }}
+        remote_user: ${{ secrets.INSTANCE_USER }}
+        remote_key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
 
     # run the server api
     - name: Run Server
