@@ -80,7 +80,7 @@ jobs:
     # deploy web app to the new instance
     - name: Deploy to New Instance
       id: deploy
-      runs: |
+      run: |
         rsync -avz -e "ssh -i -o IdentityFile= ${{ secrets.INSTANCE_PRIVATE_KEY }}" /api/ ${{ INSTANCE_USER }}@${{ steps.terraform-output.outputs.stdout }}:/var/app/
 
     # run the server api
