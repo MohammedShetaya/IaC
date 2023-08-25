@@ -2,7 +2,7 @@ terraform {
   backend "remote" {
     organization = "Shetaya_org"
     workspaces {
-      name = "IaC-Dev"
+      name = "IaC"
     }
   }
   required_providers {
