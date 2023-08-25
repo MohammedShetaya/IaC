@@ -81,7 +81,7 @@ jobs:
       with:
         switches: -avzr --delete
         path: ./api
-        remote_path: /var/app
+        remote_path: /var
         remote_host: ${{ steps.terraform-output.outputs.stdout }}
         remote_user: ${{ secrets.INSTANCE_USER }}
         remote_key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
@@ -93,7 +93,7 @@ jobs:
         hosts: '${{ secrets.INSTANCE_USER }}@${{ steps.terraform-output.outputs.stdout }}'
         privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
         command: |
-          cd /var/app/api
+          cd /var/api
           npm ci
           npm start
 
