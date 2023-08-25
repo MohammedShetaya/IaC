@@ -63,12 +63,48 @@ jobs:
       working-directory: infra/development/
       run: terraform apply -auto-approve
 
-    - name: Extract Terraform Output
+    # extract the dns of the instance from the outputs of the terraform run
+    - name: Extract Instance DNS
       id: terraform-output
       working-directory: infra/development/
       run: |
         terraform output development_dns_${{ steps.create-resource-file.outputs.RESOURCE_ID }}
     
+    # checkout to the new pr
+    - name: Checkout to New PR
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+    
+
+    # deploy web app to the new instance
+    - name: Deploy to New Instance
+      id: deploy
+      runs: |
+        rsync -avz -e "ssh -i -o IdentityFile= ${{ secrets.INSTANCE_PRIVATE_KEY }}" /api/ ${{ INSTANCE_USER }}@${{ steps.terraform-output.outputs.stdout }}:/var/app/
+
+    # run the server api
+    - name: Run Server
+      uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
+      with:
+        hosts: '${{ secrets.INSTANCE_USER }}@${{ steps.terraform-output.outputs.stdout }}'
+        privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
+        command: |
+          cd /var/app/api
+          npm ci
+          npm start
+
+    # test the api by sending an http request on /hello
+    - name: Test API
+      run: curl "${{ steps.terraform-output.outputs.stdout }}/hello"
+
+    # checkout back to the branch that contains the infra files
+    - name: Checkout back to the infra branch
+      uses: actions/checkout@v2
+      with:
+        ref: infra  
+
+    # destroy the the infra as it is used for this PR only
     - name: Destroy Infrastructure
       id: infra-destroy
       working-directory: infra/development/
