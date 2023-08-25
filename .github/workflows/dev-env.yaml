@@ -14,7 +14,7 @@ jobs:
     defaults:
       run:
         shell: bash
-    
+    environment: Dev
     runs-on: ubuntu-latest
     
     steps:
@@ -78,7 +78,7 @@ jobs:
 
     - name: any
       run: echo "${{ secrets.INSTANCE_PRIVATE_KEY }}"    
-      
+
     - name: 'Deploy to New Instance'
       uses: burnett01/rsync-deployments@23a557dceb19f9bb960ef40cf75cab5e9b37ec1f
       with:
