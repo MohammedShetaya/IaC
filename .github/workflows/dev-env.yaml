@@ -68,6 +68,11 @@ jobs:
       working-directory: infra/development/
       run: |
         terraform output development_dns_${{ steps.create-resource-file.outputs.RESOURCE_ID }}
+    
+    - name: Destroy Infrastructure
+      id: infra-destroy
+      working-directory: infra/development/
+      run: terraform destroy -auto-approve
 
 
 
