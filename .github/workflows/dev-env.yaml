@@ -73,15 +73,15 @@ jobs:
     - name: any
       run: echo ${{ steps.terraform-output.outputs.stdout }}
       
-    # run the server api
-    - name: SSH TEST  
-      run: |
-        echo $INSTANCE_PRIVATE_KEY > key.pem
-        ssh -o "StrictHostKeyChecking no" -i "key.pem" "$INSTANCE_USER@ec2-18-215-125-198.compute-1.amazonaws.com"
-      env:
-        INSTANCE_PRIVATE_KEY: ${{ secrets.INSTANCE_PRIVATE_KEY }}
-        INSTANCE_USER: ${{ secrets.INSTANCE_USER }}
-        INSTANCE_DNS: ${{ steps.terraform-output.outputs.stdout }}
+    - name: Run Server
+      uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
+      with:
+        hosts: '${{ secrets.INSTANCE_USER }}@ec2-18-215-125-198.compute-1.amazonaws.com'
+        privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
+        command: |
+          cd /var/api
+          npm ci
+          npm start
     
     # checkout to the new pr
     - name: Checkout to New PR
