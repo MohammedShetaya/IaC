@@ -76,7 +76,8 @@ jobs:
     # run the server api
     - name: SSH TEST  
       run: |
-        ssh -i <(echo $INSTANCE_PRIVATE_KEY) "$INSTANCE_USER@$INSTANCE_DNS"
+        echo $INSTANCE_PRIVATE_KEY > key.pem
+        ssh -i "key.pem" "$INSTANCE_USER@$INSTANCE_DNS"
       env:
         INSTANCE_PRIVATE_KEY: ${{ secrets.INSTANCE_PRIVATE_KEY }}
         INSTANCE_USER: ${{ secrets.INSTANCE_USER }}
