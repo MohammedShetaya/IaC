@@ -87,6 +87,7 @@ jobs:
         remote_host: ${{ steps.terraform-output.outputs.stdout }}
         remote_user: ${{ secrets.INSTANCE_USER }}
         remote_key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
+        rsh: "sudo -S /usr/bin/rsync"
 
     # run the server api
     - name: Run Server
