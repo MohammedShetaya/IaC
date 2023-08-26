@@ -69,6 +69,8 @@ jobs:
       working-directory: infra/development/
       run: |
         instance_dns=$(terraform output development_dns_${{ steps.create-resource-file.outputs.RESOURCE_ID }})
+        instance_dns="${instance_dns%\"}"  # Remove leading double quote
+        instance_dns="${instance_dns#\"}"  # Remove trailing double quote
         echo "Instance DNS: $instance_dns"
     
     # checkout to the new pr
