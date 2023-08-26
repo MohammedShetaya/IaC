@@ -68,7 +68,7 @@ jobs:
       id: terraform-output
       working-directory: infra/development/
       run: |
-        terraform output development_dns_${{ steps.create-resource-file.outputs.RESOURCE_ID }}
+        terraform output -raw -no-color development_dns_${{ steps.create-resource-file.outputs.RESOURCE_ID }}
     
     - name: any
       run: echo ${{ steps.terraform-output.outputs.stdout }}
@@ -76,7 +76,7 @@ jobs:
     - name: Run Server
       uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
       with:
-        hosts: '${{ secrets.INSTANCE_USER }}@ec2-18-215-125-198.compute-1.amazonaws.com'
+        hosts: '${{ secrets.INSTANCE_USER }}@${{ steps.terraform-output.outputs.stdout }}'
         privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
         command: |
           cd /var/api
