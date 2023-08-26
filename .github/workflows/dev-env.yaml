@@ -79,7 +79,7 @@ jobs:
 
 
     - name: 'Deploy to New Instance'
-      uses: burnett01/rsync-deployments@v1
+      uses: burnett01/rsync-deployments@master
       with:
         switches: -avzr --delete
         path: ./api
