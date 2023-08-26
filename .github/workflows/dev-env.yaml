@@ -77,7 +77,7 @@ jobs:
     - name: SSH TEST  
       run: |
         echo $INSTANCE_PRIVATE_KEY > key.pem
-        ssh -i "key.pem" "$INSTANCE_USER@$( echo $INSTANCE_DNS" | tr -d '"' )"
+        ssh -i "key.pem" "$INSTANCE_USER@$( echo "$INSTANCE_DNS" | tr -d '"' )"
       env:
         INSTANCE_PRIVATE_KEY: ${{ secrets.INSTANCE_PRIVATE_KEY }}
         INSTANCE_USER: ${{ secrets.INSTANCE_USER }}
