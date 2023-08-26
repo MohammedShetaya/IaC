@@ -79,14 +79,14 @@ jobs:
 
 
     - name: 'Deploy to New Instance'
-      uses: burnett01/rsync-deployments@6.0.0
+      uses: contention/rsync-deployments@v2.0.0
       with:
-        switches: -avzr --delete
-        path: ./api
-        remote_path: /var/web
-        remote_host: ${{ steps.terraform-output.outputs.stdout }}
-        remote_user: ubuntu
-        remote_key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
+        FLAGS: -avzr --delete
+        LOCALPATH: ./api
+        REMOTEPATH: /var/web
+        HOST: ${{ steps.terraform-output.outputs.stdout }}
+        USER: ${{ secrets.INSTANCE_USER }}
+        DEPLOY_KEY: ${{ secrets.INSTANCE_PRIVATE_KEY }}
 
     # run the server api
     - name: Run Server
