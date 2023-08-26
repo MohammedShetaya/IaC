@@ -68,17 +68,11 @@ jobs:
       id: terraform-output
       working-directory: infra/development/
       run: |
-        instance_dns=$(terraform output development_dns_${{ steps.create-resource-file.outputs.RESOURCE_ID }})
-        instance_dns="${instance_dns%\"}"  # Remove leading double quote
-        instance_dns="${instance_dns#\"}"  # Remove trailing double quote
-        echo "$instance_dns"
+        terraform output development_dns_${{ steps.create-resource-file.outputs.RESOURCE_ID }}
     
-    # checkout to the new pr
-    - name: Checkout to New PR
-      uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.head.ref }}
-
+    - name: any
+      run: echo ${{ steps.terraform-output.outputs.stdout }}
+      
     # run the server api
     - name: SSH TEST  
       uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
@@ -88,6 +82,13 @@ jobs:
         debug: true
         command: |
           ls /var
+    
+    # checkout to the new pr
+    - name: Checkout to New PR
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
 
     - name: 'Deploy to New Instance'
       uses: burnett01/rsync-deployments@23a557dceb19f9bb960ef40cf75cab5e9b37ec1f
