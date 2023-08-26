@@ -77,6 +77,8 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
 
+    - name: any
+      run: rsync --version
 
     - name: 'Deploy to New Instance'
       uses: contention/rsync-deployments@v2.0.0
