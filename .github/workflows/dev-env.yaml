@@ -68,7 +68,8 @@ jobs:
       id: terraform-output
       working-directory: infra/development/
       run: |
-        echo "DNS=$( terraform output development_dns_${{ steps.create-resource-file.outputs.RESOURCE_ID }} )" >> $GITHUB_OUTPUT
+        instance_dns=$(terraform output development_dns_${{ steps.create-resource-file.outputs.RESOURCE_ID }})
+        echo "Instance DNS: $instance_dns"
     
     # checkout to the new pr
     - name: Checkout to New PR
@@ -80,7 +81,7 @@ jobs:
     - name: any
       uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
       with:
-        hosts: "${{ secrets.INSTANCE_USER }}@${{ steps.terraform-output.outputs.DNS }}"
+        hosts: "${{ secrets.INSTANCE_USER }}@${{ steps.terraform-output.outputs.stdout }}"
         privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
         debug: true
         command: |
@@ -92,7 +93,7 @@ jobs:
         switches: -avzr --delete
         path: ./api
         remote_path: /var/
-        remote_host: ${{ steps.terraform-output.outputs.DNS }}
+        remote_host: ${{ steps.terraform-output.outputs.stdout }}
         remote_user: ${{ secrets.INSTANCE_USER }}
         remote_key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
 
@@ -100,7 +101,7 @@ jobs:
     - name: Run Server
       uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
       with:
-        hosts: '${{ secrets.INSTANCE_USER }}@${{ steps.terraform-output.outputs.DNS }}'
+        hosts: '${{ secrets.INSTANCE_USER }}@${{ steps.terraform-output.outputs.stdout }}'
         privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
         command: |
           cd /var/api
@@ -109,7 +110,7 @@ jobs:
 
     # test the api by sending an http request on /hello
     - name: Test API
-      run: curl "${{ steps.terraform-output.outputs.DNS }}/hello"
+      run: curl "${{ steps.terraform-output.outputs.stdout }}/hello"
 
     # checkout back to the branch that contains the infra files
     - name: Checkout back to the infra branch
