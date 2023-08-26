@@ -85,7 +85,7 @@ jobs:
         path: ./api
         remote_path: /var/web
         remote_host: ${{ steps.terraform-output.outputs.stdout }}
-        remote_user: ${{ secrets.INSTANCE_USER }}
+        remote_user: ubuntu
         remote_key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
 
     # run the server api
