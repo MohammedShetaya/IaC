@@ -1,4 +1,6 @@
-#!/bin/env bash
+#!/bin/bash
+
+set -x
 
 if ! command -v node &> /dev/null; then
     echo "Node.js is not installed. Installing..."
@@ -10,5 +12,7 @@ else
     echo "Node.js is already installed."
 fi
 
+echo "Installing dependencies..."
 npm ci
+
 npm start
