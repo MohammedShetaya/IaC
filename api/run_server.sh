@@ -13,6 +13,6 @@ else
 fi
 
 echo "Installing dependencies..."
-npm ci
+npm install
 
 npm start
