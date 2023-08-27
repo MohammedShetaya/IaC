@@ -2,9 +2,9 @@
   "name": "api",
   "version": "1.0.0",
   "description": "Simple Express API",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node app.js",
     "test": "mocha './tests/**/*.test.js' --exit",
     "lint": "eslint ."
   },
@@ -12,19 +12,11 @@
   "author": "Your Name",
   "license": "ISC",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
   },
   "dependencies": {
-    "chai-http": "^4.4.0",
     "express": "^4.18.2"
-  },
-  "devDependencies": {
-    "chai": "^4.3.4",
-    "eslint": "^8.47.0",
-    "eslint-plugin-mocha": "^10.1.0",
-    "husky": "^8.0.3",
-    "mocha": "^10.0.0",
-    "supertest": "^6.2.0"
   },
   "files": [
     "app.js"
@@ -33,6 +25,14 @@
     "hooks": {
       "pre-push": "npm run lint"
     }
+  },
+  "devDependencies": {
+    "chai": "^4.3.8",
+    "chai-http": "^4.4.0",
+    "eslint": "^8.48.0",
+    "eslint-plugin-mocha": "^10.1.0",
+    "husky": "^8.0.3",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
-  
 }
