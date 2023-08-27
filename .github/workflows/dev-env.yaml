@@ -100,7 +100,7 @@ jobs:
 
     # test the api by sending an http request on /hello
     - name: Test API
-      run: curl "${{ steps.terraform-output.outputs.stdout }}/hello"
+      run: curl "${{ steps.terraform-output.outputs.stdout }}:3000/hello"
 
     # checkout back to the branch that contains the infra files
     - name: Checkout back to the infra branch
