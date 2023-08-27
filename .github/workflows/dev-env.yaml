@@ -112,7 +112,9 @@ jobs:
     - name: Destroy Infrastructure
       id: infra-destroy
       working-directory: infra/development/
-      run: terraform destroy -auto-approve
+      run: |
+        terraform init
+        terraform destroy -auto-approve
 
 
 
