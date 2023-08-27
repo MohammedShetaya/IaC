@@ -49,14 +49,14 @@ _create_instance_file() {
         _exit_1 "ERROR: could not generate a random id or did not find an input id"
     fi
 
-    if [[ -f "${script_dir}/development_instance_${resource_id}.tf" ]]; then 
+    if [[ ! -f "${script_dir}/development_instance_${resource_id}.tf" ]]; then 
         # copy the image file to a new tf file 
         cp \
           "${script_dir}/development_instance.tf.example" \
           "${script_dir}/development_instance_${resource_id}.tf"
 
         # replace all RANDOMID occurences in the created file with resource_id
-        sed -i "s/RANDOMID/${resource_id}/g" "${script_dir}/extra_staging_${resource_id}.tf"
+        sed -i "s/RANDOMID/${resource_id}/g" "${script_dir}/development_instance_${resource_id}.tf"
 
     fi
 
