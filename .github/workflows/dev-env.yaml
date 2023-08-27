@@ -77,22 +77,12 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
 
-
-        # run the server api
-    - name: fix .bashrc
-      uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
-      with:
-        hosts: '${{ secrets.INSTANCE_USER }}@${{ steps.terraform-output.outputs.stdout }}'
-        privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
-        command: |
-          mv ~/.bashrc ~/._bashrc
-
     - name: 'Deploy to New Instance'
       uses: burnett01/rsync-deployments@6.0.0
       with:
         switches: -avzr --delete
         path: ./api
-        remote_path: /var/web
+        remote_path: /home/${{ secrets.INSTANCE_USER }}/server
         remote_host: ${{ steps.terraform-output.outputs.stdout }}
         remote_user: ${{ secrets.INSTANCE_USER }}
         remote_key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
@@ -104,7 +94,7 @@ jobs:
         hosts: '${{ secrets.INSTANCE_USER }}@${{ steps.terraform-output.outputs.stdout }}'
         privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
         command: |
-          cd /var/web/api
+          cd /home/${{ secrets.INSTANCE_USER }}/server/api
           npm ci
           npm start
 
