@@ -14,7 +14,7 @@ jobs:
     defaults:
       run:
         shell: bash
-    
+    environment: Dev
     runs-on: ubuntu-latest
     
     steps:
@@ -42,6 +42,7 @@ jobs:
       run: |
         chmod +x create_instance_resource.sh
         OUTPUT="$(./create_instance_resource.sh PR_${{ github.event.pull_request.number }} | jq -r .resource_id)"
+        ls -l
         echo "RESOURCE_ID=$OUTPUT" >> $GITHUB_OUTPUT
     
     - name: Terraform Init and Validate
@@ -53,22 +54,77 @@ jobs:
     
     - name: Terraform Plan
       id: terraform-plan
-      run: terraform plan -no-color
       working-directory: infra/development/
-
-    - name: Terraform Apply
+      run: terraform plan -no-color
+    
+    # apply the changes of that plan once successful
+    - name: Terraform Apply 
       id: terraform-apply
       working-directory: infra/development/
-      run: |
-        terraform apply -auto-approve
+      run: terraform apply -auto-approve
 
-    - name: Extract Terraform Output
+    # extract the dns of the instance from the outputs of the terraform run
+    - name: Extract Instance DNS
       id: terraform-output
       working-directory: infra/development/
       run: |
-        terraform output development_dns_${{ steps.create-resource-file.outputs.RESOURCE_ID }}
+        terraform output -raw -no-color development_dns_${{ steps.create-resource-file.outputs.RESOURCE_ID }}
+    
+    
+    # checkout to the new pr
+    - name: Checkout to New PR
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
 
+    # run the server api
+    - name: Check Server Status
+      uses: JimCronqvist/action-ssh@master
+      with:
+        hosts: '${{ secrets.INSTANCE_USER }}@${{ steps.terraform-output.outputs.stdout }}'
+        privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
+        command: |
+          echo "Checking if the server is running"
+          ls -l /
 
+    - name: 'Deploy to New Instance'
+      uses: burnett01/rsync-deployments@6.0.0
+      with:
+        switches: -avzr --delete
+        path: ./api
+        remote_path: /home/${{ secrets.INSTANCE_USER }}/server
+        remote_host: ${{ steps.terraform-output.outputs.stdout }}
+        remote_user: ${{ secrets.INSTANCE_USER }}
+        remote_key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
+
+    # run the server api
+    - name: Run Server
+      uses: JimCronqvist/action-ssh@master
+      with:
+        hosts: '${{ secrets.INSTANCE_USER }}@${{ steps.terraform-output.outputs.stdout }}'
+        privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
+        command: |
+          cd /home/${{ secrets.INSTANCE_USER }}/server/api
+          chmod +x run_server.sh
+          ./run_server.sh
+
+    # test the api by sending an http request on /hello
+    - name: Test API
+      run: curl "http://${{ steps.terraform-output.outputs.stdout }}:3000/hello"
+
+    # checkout back to the branch that contains the infra files
+    - name: Checkout back to the infra branch
+      uses: actions/checkout@v2
+      with:
+        ref: infra  
+
+    # destroy the the infra as it is used for this PR only
+    - name: Destroy Infrastructure
+      id: infra-destroy
+      working-directory: infra/development/
+      run: |
+        terraform init
+        terraform destroy -auto-approve
 
 
 
