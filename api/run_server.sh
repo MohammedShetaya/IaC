@@ -15,4 +15,4 @@ fi
 echo "Installing dependencies..."
 npm install
 
-npm start
+npm start > server.log 2>&1 &
