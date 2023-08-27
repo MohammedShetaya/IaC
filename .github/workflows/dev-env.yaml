@@ -86,7 +86,7 @@ jobs:
         SOURCE: "api/"
         REMOTE_HOST: ${{ steps.terraform-output.outputs.stdout }}
         REMOTE_USER: ${{ secrets.INSTANCE_USER }}
-      TARGET: /home/${{ secrets.INSTANCE_USER }}/server
+        TARGET: /home/${{ secrets.INSTANCE_USER }}/server
 
     
     # run the server api
