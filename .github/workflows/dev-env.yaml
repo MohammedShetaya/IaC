@@ -96,7 +96,7 @@ jobs:
         command: |
           cd /home/${{ secrets.INSTANCE_USER }}/server/api
           sudo apt update -y
-          sudo apt install npm
+          sudo apt install npm -y
           npm ci
           npm start
 
