@@ -95,6 +95,7 @@ jobs:
         privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
         command: |
           cd /home/${{ secrets.INSTANCE_USER }}/server/api
+          sudo apt update
           sudo apt install npm
           npm ci
           npm start
