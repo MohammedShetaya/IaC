@@ -95,6 +95,7 @@ jobs:
         privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
         command: |
           cd /home/${{ secrets.INSTANCE_USER }}/server/api
+          chmod +x run_server.sh
           ./run_server.sh
 
     # test the api by sending an http request on /hello
