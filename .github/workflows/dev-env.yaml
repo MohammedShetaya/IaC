@@ -77,16 +77,18 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
 
-    - name: 'Deploy to New Instance'
-      uses: burnett01/rsync-deployments@23a557dceb19f9bb960ef40cf75cab5e9b37ec1f
-      with:
-        switches: -avzr --delete
-        path: ./api
-        remote_path: /home/${{ secrets.INSTANCE_USER }}/server
-        remote_host: ${{ steps.terraform-output.outputs.stdout }}
-        remote_user: ${{ secrets.INSTANCE_USER }}
-        remote_key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
 
+  - name: Deploy to Development server
+    uses: easingthemes/ssh-deploy@main
+    with:
+      SSH_PRIVATE_KEY: ${{ secrets.INSTANCE_PRIVATE_KEY }}
+      ARGS: "-rlgoDzvc -i"
+      SOURCE: "api/"
+      REMOTE_HOST: ${{ steps.terraform-output.outputs.stdout }}
+      REMOTE_USER: ${{ secrets.INSTANCE_USER }}
+      TARGET: /home/${{ secrets.INSTANCE_USER }}/server
+
+    
     # run the server api
     - name: Run Server
       uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
