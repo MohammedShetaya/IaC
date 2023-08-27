@@ -2,9 +2,9 @@
   "name": "api",
   "version": "1.0.0",
   "description": "Simple Express API",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node app.js",
     "test": "mocha './tests/**/*.test.js' --exit",
     "lint": "eslint ."
   },

@@ -95,10 +95,7 @@ jobs:
         privateKey: ${{ secrets.INSTANCE_PRIVATE_KEY }}
         command: |
           cd /home/${{ secrets.INSTANCE_USER }}/server/api
-          sudo apt update -y
-          sudo apt install npm -y
-          npm ci
-          npm start
+          ./run_server.sh
 
     # test the api by sending an http request on /hello
     - name: Test API
