@@ -77,18 +77,16 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
 
-    - name: any
-      run: rsync --version
 
     - name: 'Deploy to New Instance'
-      uses: contention/rsync-deployments@v2.0.0
+      uses: burnett01/rsync-deployments@v6.0.0
       with:
-        FLAGS: -avzr --delete
-        LOCALPATH: ./api
-        REMOTEPATH: /var/web
-        HOST: ${{ steps.terraform-output.outputs.stdout }}
-        USER: ${{ secrets.INSTANCE_USER }}
-        DEPLOY_KEY: ${{ secrets.INSTANCE_PRIVATE_KEY }}
+        switches: -avzr --delete
+        path: ./api
+        remote_path: /var/web
+        remote_host: ${{ steps.terraform-output.outputs.stdout }}
+        remote_user: ${{ secrets.INSTANCE_USER }}
+        remote_key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
 
     # run the server api
     - name: Run Server
